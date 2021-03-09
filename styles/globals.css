@@ -14,3 +14,17 @@ a {
 * {
   box-sizing: border-box;
 }
+
+body {
+  background-color: #121214;
+  color: #fff;
+  text-rendering: optimizeLegibility;
+  padding: 0;
+  margin: 0;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
