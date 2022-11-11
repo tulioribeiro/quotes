@@ -1,7 +1,9 @@
+import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
+import { IHome, IQuote } from './api/types';
 
-export default function Home({ quote }) {
+export default function Home({ quote }: IHome) {
   return (
     <div className={styles.container}>
       <Head>
@@ -26,13 +28,13 @@ export default function Home({ quote }) {
   );
 }
 
-export async function getServerSideProps() {
-  let response = await fetch(
-    'https://api.github.com/gists/d3867020337d8cd6f05cc1a95ee3ab39'
-  );
-  response = await response.json();
-  const quotes = JSON.parse(response.files['notion-quotes.json'].content);
 
+export const getServerSideProps: GetServerSideProps<IHome> = async () => {
+  const response = await fetch(
+    'https://gist.githubusercontent.com/tulioribeiro/d3867020337d8cd6f05cc1a95ee3ab39/raw/d22d71e63c3f74703ee19909b8329399f38382fb/notion-quotes.json'
+  );
+
+  const quotes: IQuote[] = await response.json()
   const quoteIndex = Math.floor(Math.random() * quotes.length);
 
   return {
