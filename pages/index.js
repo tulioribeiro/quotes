@@ -1,27 +1,7 @@
 import Head from 'next/head';
-import { useEffect, useState } from 'react';
 import styles from '../styles/Home.module.css';
 
-export default function Home() {
-  const [quote, setQuote] = useState({});
-
-  useEffect(() => {
-    async function fetchQuotes() {
-      let response = await fetch(
-        'https://api.github.com/gists/d3867020337d8cd6f05cc1a95ee3ab39'
-      );
-      response = await response.json();
-
-      const quotes = JSON.parse(response.files['notion-quotes.json'].content);
-
-      const quoteIndex = Math.floor(Math.random() * quotes.length);
-
-      setQuote(quotes[quoteIndex]);
-    }
-
-    fetchQuotes();
-  }, []);
-
+export default function Home({ quote }) {
   return (
     <div className={styles.container}>
       <Head>
@@ -44,4 +24,20 @@ export default function Home() {
       )}
     </div>
   );
+}
+
+export async function getServerSideProps() {
+  let response = await fetch(
+    'https://api.github.com/gists/d3867020337d8cd6f05cc1a95ee3ab39'
+  );
+  response = await response.json();
+  const quotes = JSON.parse(response.files['notion-quotes.json'].content);
+
+  const quoteIndex = Math.floor(Math.random() * quotes.length);
+
+  return {
+    props: {
+      quote: quotes[quoteIndex]
+    }
+  }
 }
